@@ -246,7 +246,7 @@ Middleware::add(function (Request $request, \Closure $next, $header = []) {
 });
 
 // 注册系统常用指令
-\think\Console::addDefaultCommands([
+/*\think\Console::addDefaultCommands([
     'library\command\Sess',
     'library\command\task\Stop',
     'library\command\task\State',
@@ -257,10 +257,10 @@ Middleware::add(function (Request $request, \Closure $next, $header = []) {
     'library\command\sync\Config',
     'library\command\sync\Wechat',
     'library\command\sync\Service',
-]);
+]);*/
 
 // 动态加载模块配置
-if (function_exists('think\__include_file')) {
-    $root = rtrim(str_replace('\\', '/', env('app_path')), '/');
-    foreach (glob("{$root}/*/sys.php") as $file) \think\__include_file($file);
-}
+//if (function_exists('think\__include_file')) {
+  //  $root = rtrim(str_replace('\\', '/', env('app_path')), '/');
+    //foreach (glob("{$root}/*/sys.php") as $file) \think\__include_file($file);
+//}
