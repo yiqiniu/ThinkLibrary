@@ -93,6 +93,25 @@ class Query extends Logic
     }
 
     /**
+     * @param $fields 要查询的字段
+     * @param string $input  关键字
+     * @return $this
+     */
+    public function likeor($fields, $input = 'keyword')
+    {
+        if($data = input($input)){
+            if(strpos($fields,',')!==false){
+                $fields= str_replace(",","|",$fields);
+            }
+            if(is_array($fields)){
+                $fields = impload('|',$fields);
+            }
+            $this->query->where($fields,'like', "%$data%");
+        }
+        return $this;
+    }
+
+    /**
      * 设置Equal查询条件
      * @param string|array $fields 查询字段
      * @param string $input 输入类型 get|post
