@@ -1,52 +1,53 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | Library for ThinkAdmin
+// | ThinkAdmin
 // +----------------------------------------------------------------------
 // | 版权所有 2014~2019 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://library.thinkadmin.top
+// | 官方网站: http://demo.thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | gitee 仓库地址 ：https://gitee.com/zoujingli/ThinkLibrary
-// | github 仓库地址 ：https://github.com/zoujingli/ThinkLibrary
+// | gitee 代码仓库：https://gitee.com/zoujingli/ThinkAdmin
+// | github 代码仓库：https://github.com/zoujingli/ThinkAdmin
 // +----------------------------------------------------------------------
 
-namespace library\command\sync;
+namespace library\queue;
 
-use library\command\Sync;
+use library\service\ProcessService;
+use think\console\Command;
 use think\console\Input;
 use think\console\Output;
 
 /**
- * Class Wechat
- * @package library\command\sync
+ * 查看任务监听的主进程状态
+ * Class StateQueue
+ * @package library\queue
  */
-class Wechat extends Sync
+class StateQueue extends Command
 {
-
     /**
      * 指令属性配置
      */
     protected function configure()
     {
-        $this->modules = ['application/wechat/'];
-        $this->setName('xsync:wechat')->setDescription('[同步]覆盖本地Wechat模块代码');
+        $this->setName('xtask:state')->setDescription('[控制]查看监听主进程状态');
     }
 
     /**
-     * 执行更新操作
+     * 指令执行状态
      * @param Input $input
      * @param Output $output
      */
     protected function execute(Input $input, Output $output)
     {
-        $root = str_replace('\\', '/', env('root_path'));
-        if (file_exists("{$root}/application/wechat/sync.lock")) {
-            $this->output->error("--- Wechat 模块已经被锁定，不能继续更新");
+        $process = ProcessService::instance();
+        $command = $process->think('xtask:listen');
+        if (count($result = $process->query($command)) > 0) {
+            $output->info("异步任务监听主进程{$result[0]['pid']}正在运行...");
         } else {
-            parent::execute($input, $output);
+            $output->error("异步任务监听主进程没有运行哦!");
         }
     }
 }
