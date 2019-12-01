@@ -251,7 +251,7 @@ if (PHP_SAPI !== 'cli') {
 }
 
 // 注册系统常用指令
-if (class_exists('think\Console')) {
+/*if (class_exists('think\Console')) {
     Console::addDefaultCommands([
         // 注册清理无效会话
         'library\command\Sess',
@@ -269,12 +269,12 @@ if (class_exists('think\Console')) {
         'library\command\sync\Wechat',
         'library\command\sync\Service',
     ]);
-}
+}*/
 
 // 动态加载模块配置
-if (function_exists('think\__include_file')) {
-    $root = rtrim(str_replace('\\', '/', env('app_path')), '/');
-    foreach (glob("{$root}/*/sys.php") as $file) {
-        \think\__include_file($file);
-    }
-}
+//if (function_exists('think\__include_file')) {
+  //  $root = rtrim(str_replace('\\', '/', env('app_path')), '/');
+//    foreach (glob("{$root}/*/sys.php") as $file) {
+  //      \think\__include_file($file);
+//    }
+//}
